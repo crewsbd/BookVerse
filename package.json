@@ -1,0 +1,15 @@
+{
+  "name": "bookverse",
+  "version": "1.0.0",
+  "description": "The BookVerse API will serve as the backend for a hypothetical thick client web app centered on storing book information as well as users, user collections and user reviews.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongoose": "^8.3.5"
+  }
+}
