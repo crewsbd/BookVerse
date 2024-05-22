@@ -54,7 +54,21 @@ passport.use(
             clientSecret: process.env.GITHUB_CLIENT_SECRET,
             callbackURL: process.env.CALLBACK_URL,
         },
-        function (accessToken, refreshToken, profile, done) {
+        async function (accessToken, refreshToken, profile, done) {
+            // Add new user if needed
+            let user = await userModel.findOne({ id: profile.id });
+
+            if (!user) {
+                // add them
+                user = new userModel({
+                    id: profile.id,
+                    displayName: profile.displayName,
+                    userName: profile.username,
+                    profileUrl: profile.profileUrl,
+                    authProvider: profile.provider,
+                });
+                await user.save();
+            }
             return done(null, profile);
         }
     )
@@ -73,8 +87,8 @@ passport.deserializeUser((user, done) => {
 // Stub route until routes added
 app.get('/', (request, response, next) => {
     console.log('ENDPOINT GET /');
-    response.status(200).json({message: 'Stub. Replace this with a router.'})
-})
+    response.status(200).json({ message: 'Stub. Replace this with a router.' });
+});
 
 // Start API
 app.listen(process.env.PORT, () => {
