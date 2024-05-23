@@ -7,15 +7,17 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const SessionStore = require('connect-mongodb-session')(session);
-const passport = require('passport');
-const OauthStrategy = require('passport-github2').Strategy;
+
+const database = require('./database');
+const authentication = require('./authentication');
+const router = require('./routes');
 
 // Error handling
 process.on('uncaughtException', (error, origin) => {
     console.log(`${process.stderr.fd}`);
 });
 process.on('unhandledRejection', (error, origin) => {
-    console.log(`Handled rejection`);
+    console.log(`Handled rejection: ${error}`);
 });
 
 // Session store
@@ -33,7 +35,7 @@ sessionStore.on('error', () => {
 // Middleware implemented
 app.use(cors({ methods: 'GET,POST,PUT,PATCH,DELETE' }));
 app.use(bodyParser.json());
-console.log('Setting up session.');
+console.log('Setting up session');
 app.use(
     session({
         secret: 'secret',
@@ -43,48 +45,13 @@ app.use(
     })
 );
 
-// Configure passport
-console.log('Configure passport');
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(
-    new OauthStrategy(
-        {
-            clientID: process.env.GITHUB_CLIENT_ID,
-            clientSecret: process.env.GITHUB_CLIENT_SECRET,
-            callbackURL: process.env.CALLBACK_URL,
-        },
-        async function (accessToken, refreshToken, profile, done) {
-            // Add new user if needed
-            let user = await userModel.findOne({ id: profile.id });
-
-            if (!user) {
-                // add them
-                user = new userModel({
-                    id: profile.id,
-                    displayName: profile.displayName,
-                    userName: profile.username,
-                    profileUrl: profile.profileUrl,
-                    authProvider: profile.provider,
-                });
-                await user.save();
-            }
-            return done(null, profile);
-        }
-    )
-);
-
-// Set user serializer
-passport.serializeUser((user, done) => {
-    done(null, user); // Is this to put a user in a DB?
-});
-
-// Set user deserializer
-passport.deserializeUser((user, done) => {
-    done(null, user);
-});
+console.log('Setting up authentication');
+app.use(authentication.initializer);
+app.use(authentication.session);
 
 // Stub route until routes added
+app.use('/', router);
+console.log('Setting up root route');
 app.get('/', (request, response, next) => {
     console.log('ENDPOINT GET /');
     response.status(200).json({ message: 'Stub. Replace this with a router.' });
