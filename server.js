@@ -35,7 +35,7 @@ sessionStore.on('error', () => {
 });
 
 // Middleware implemented
-app.use(cors({ methods: 'GET,POST,PUT,PATCH,DELETE' }));
+app.use(cors({ methods: 'GET,POST,PUT,PATCH,DELETE', origin: true }));
 app.use(bodyParser.json());
 console.log('Setting up session');
 app.use(
@@ -64,16 +64,15 @@ app.get('/', (request, response, next) => {
 //     console.log(`API server listening on localhost:${process.env.PORT}`);
 // });
 
-
-  // Initialize the database
-  database.initDatabase((error) => {
+// Initialize the database
+database.initDatabase((error) => {
     if (error) {
-      console.log(`DB init error`);
-      console.log(error);
+        console.log(`DB init error`);
+        console.log(error);
     } else {
-      // Start the server
-      app.listen(process.env.PORT, () => {
-        console.log(`Server listening on localhost:${process.env.PORT}`);
-      });
+        // Start the server
+        app.listen(process.env.PORT, () => {
+            console.log(`Server listening on localhost:${process.env.PORT}`);
+        });
     }
-  });
+});
