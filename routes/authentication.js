@@ -26,6 +26,7 @@ router.get(
         session: false,
     }),
     (request, response) => {
+        // #swagger.ignore = true
         console.log('Authentication success');
         request.session.user = request.user;
         response.redirect('/authentication');

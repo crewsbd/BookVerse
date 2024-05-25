@@ -5,8 +5,8 @@ const doc = {
         title: 'BookVerse API',
         description: 'BookVerse API'
     },
-    host: 'localhost:3000',
-    schemes: ['https', 'http']
+    host: 'bookverse-bzgy.onrender.com',
+    schemes: ['https']
 }
 
 const outputFile = './swagger.json'

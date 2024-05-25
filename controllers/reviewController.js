@@ -1,6 +1,7 @@
 const { MongoClient, ObjectId } = require('mongodb'); 
 
 async function insertSampleReview(req, res) { 
+    // #swagger.ignore = true
     await client.connect(); 
     const reviewsDb = client.db('reviews'); 
     const reviewsCollection = reviewsDb.collection('reviews'); 
@@ -19,6 +20,7 @@ async function insertSampleReview(req, res) {
  
 
 async function getReviewsWithDetails(req, res) { 
+    // #swagger.ignore = true
     await client.connect(); 
     const reviewsDb = client.db('reviews'); 
     const reviewsCollection = reviewsDb.collection('reviews'); 

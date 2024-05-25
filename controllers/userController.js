@@ -1,6 +1,7 @@
 const { MongoClient, ObjectId } = require('mongodb'); 
 
 async function insertSampleUser(req, res) { 
+    // #swagger.ignore = true
     await client.connect(); 
     const usersDb = client.db('users'); 
     const usersCollection = usersDb.collection('users'); 
@@ -16,6 +17,7 @@ async function insertSampleUser(req, res) {
 } 
 
 async function addBookToUserCollection(req, res) { 
+    // #swagger.ignore = true
     const userId = req.params.userId; 
     const bookId = req.body.bookId; 
 
@@ -35,6 +37,7 @@ async function addBookToUserCollection(req, res) {
  
 
 async function getUserBookCollection(req, res) { 
+    // #swagger.ignore = true
     const userId = req.params.userId; 
 
     await client.connect(); 

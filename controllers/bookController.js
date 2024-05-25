@@ -1,6 +1,7 @@
 const { MongoClient, ObjectId } = require('mongodb'); 
 
 async function insertSampleBook(req, res) { 
+    // #swagger.ignore = true
     await client.connect(); 
     const booksDb = client.db('books'); 
     const booksCollection = booksDb.collection('books'); 
