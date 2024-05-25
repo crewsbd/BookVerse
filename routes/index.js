@@ -10,4 +10,10 @@ router.use('/users', userRouter);
 router.use('/books', bookRouter);
 router.use('/reviews', reviewRouter);
 
-module.exports = router
+router.use('/books', require('./books.js'));
+
+router.use('/users', require('./users.js'));
+
+router.use('/reviews', require('./reviews.js'));
+
+module.exports = router;

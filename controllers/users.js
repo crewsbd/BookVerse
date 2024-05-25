@@ -1,4 +1,4 @@
-const mongodb = require('../data/database');
+const mongodb = require('../database/index');
 const ObjectId = require('mongodb').ObjectId;
 
 const getAll = async (req, res) => {
@@ -44,7 +44,7 @@ const updateUser = async (req, res) => {
         data1: req.body.data1,
         data2: req.body.data2
     };
-    const response = await mongodb.getDatabase().db().collection('users').replaceOne({ _id: userID }, users);
+    const response = await mongodb.getDatabase().db().collection('users').replaceOne({ _id: userID }, user);
     if (response.modifiedCount > 0) {
         res.status(204).send();
     } else {
