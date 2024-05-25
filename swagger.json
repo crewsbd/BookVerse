@@ -5,11 +5,10 @@
     "description": "BookVerse API",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "bookverse-bzgy.onrender.com",
   "basePath": "/",
   "schemes": [
-    "https",
-    "http"
+    "https"
   ],
   "paths": {
     "/api-docs/": {
@@ -22,8 +21,37 @@
         }
       }
     },
+    "/authentication/login": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/authentication/logout": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/authentication/": {
       "get": {
+        "tags": [
+          "Authentication"
+        ],
         "description": "",
         "responses": {
           "200": {
