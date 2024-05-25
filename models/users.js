@@ -38,6 +38,6 @@ const userSchema = new Schema({
     authProvider: String,
 });
 
-const Users = model('User', userSchema, 'users');
+const Users = model('User', userSchema, 'user');
 
 module.exports = Users;

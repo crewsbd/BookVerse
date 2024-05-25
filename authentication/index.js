@@ -36,6 +36,7 @@ passport.use(
                     profileUrl: profile.profileUrl,
                     authProvider: profile.provider,
                 });
+                console.log(`Saving user ${profile.displayName}`);
                 await user.save();
             }
             return done(null, profile);

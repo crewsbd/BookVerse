@@ -8,7 +8,8 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const SessionStore = require('connect-mongodb-session')(session);
 
-const database = require('./database');
+const mongoose = require('./database/mongoose');
+const database = require('./database/index');
 const authentication = require('./authentication');
 const router = require('./routes');
 
@@ -18,6 +19,7 @@ process.on('uncaughtException', (error, origin) => {
 });
 process.on('unhandledRejection', (error, origin) => {
     console.log(`Handled rejection: ${error}`);
+    console.dir(error);
 });
 
 // Session store
@@ -58,6 +60,20 @@ app.get('/', (request, response, next) => {
 });
 
 // Start API
-app.listen(process.env.PORT, () => {
-    console.log(`API server listening on localhost:${process.env.PORT}`);
-});
+// app.listen(process.env.PORT, () => {
+//     console.log(`API server listening on localhost:${process.env.PORT}`);
+// });
+
+
+  // Initialize the database
+  database.initDatabase((error) => {
+    if (error) {
+      console.log(`DB init error`);
+      console.log(error);
+    } else {
+      // Start the server
+      app.listen(process.env.PORT, () => {
+        console.log(`Server listening on localhost:${process.env.PORT}`);
+      });
+    }
+  });

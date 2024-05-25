@@ -1,4 +1,4 @@
-const mongodb = require('../database/index');
+const mongodb = require('../database');
 const ObjectId = require('mongodb').ObjectId;
 
 const getAll = async (req, res) => {
@@ -13,7 +13,7 @@ const getAll = async (req, res) => {
 const getSingle = async (req, res) => {
     //#swagger.tags=['books']
     const bookId = new ObjectId(req.params.id);
-    const result = await mongodb.getDatabase().db().collection('books').find({ _id: bookId });
+    const result = await mongodb.getDatabase().db().collection('book').find({ _id: bookId });
     result.toArray().then((book) => {
         res.setHeader('Content-Type', 'application/json');
         res.status(200).json(book[0]);

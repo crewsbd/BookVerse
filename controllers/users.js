@@ -1,4 +1,4 @@
-const mongodb = require('../database/index');
+const mongodb = require('../database');
 const ObjectId = require('mongodb').ObjectId;
 
 const getAll = async (req, res) => {

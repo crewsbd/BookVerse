@@ -1,19 +1,40 @@
-const mongoose = require('mongoose');
+const dotenv = require("dotenv");
+dotenv.config();
 
-function connect() {
-    if (
-        mongoose.connection.readyState === mongoose.ConnectionStates.connected
-    ) {
-        console.log('Mongoose already connected');
-    } else {
-        console.log('Connecting to MongoDB');
-        mongoose
-            .connect(process.env.MONGODB_URI)
-            .then(() => console.log('Database connected. Status: ', mongoose.connection.readyState));
-        
-        console.log(`Mongodb connection status: ${mongoose.connection.readyState}`);
+const MongoClient = require("mongodb").MongoClient;
+
+let database;
+
+/**
+ * Initialize the database
+ * @param { function } callback 
+ * @returns { import('mongodb').MongoClient}
+ */
+const initDatabase = (callback) => {
+  console.log(`Initializing Mongo2`);
+  if (database) {
+    console.log("DB is already initialized!");
+    return callback(null, database);
+  }
+  MongoClient.connect(process.env.MONGODB_URI)
+    .then((client) => {
+      database = client;
+      callback(null, database);
+    })
+    .catch((err) => {
+      callback(err);
+    });
+};
+
+/**
+ * Get an already initialized database
+ * @returns { import('mongodb').MongoClient}
+ */
+const getDatabase = () => {
+    if (!database) {
+        throw Error('Database not initialized')
     }
+    return database;
 }
-connect();
 
-module.exports = mongoose;
+module.exports = { initDatabase, getDatabase };

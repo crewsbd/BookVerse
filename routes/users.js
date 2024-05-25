@@ -2,7 +2,7 @@ const router = require('express').Router();
 const authenticationRouter = require('./authentication.js');
 const usersController = require('../controllers/users.js')
 
-router.use('/authentication', authenticationRouter);
+//router.use('/authentication', authenticationRouter);
 
 /* get Routes */
 router.get('/', usersController.getAll)
@@ -16,3 +16,5 @@ router.put('/:id', usersController.updateUser)
 
 /* Delete Routes*/
 router.delete('/:id', usersController.deleteUser)
+
+module.exports = router;
