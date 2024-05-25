@@ -18,7 +18,7 @@ const userSchema = new Schema({
         type: String,
         required: false,
         unique: true,
-        index: true,
+        index: false,
         immutable: true,
         validate: validators.isEmail(),
     },
