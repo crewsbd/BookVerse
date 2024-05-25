@@ -4,4 +4,10 @@ const authenticationRouter = require('./authentication.js');
 // Put all the routers here
 router.use('/authentication', authenticationRouter);
 
-module.exports = router
+router.use('/books', require('./books.js'));
+
+router.use('/users', require('./users.js'));
+
+router.use('/reviews', require('./reviews.js'));
+
+module.exports = router;
