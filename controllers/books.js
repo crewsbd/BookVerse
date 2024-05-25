@@ -3,7 +3,7 @@ const ObjectId = require('mongodb').ObjectId;
 
 const getAll = async (req, res) => {
     //#swagger.tags=['books']
-    const result = await mongodb.getDatabase().db().collection('books').find();
+    const result = await mongodb.getDatabase().db().collection('book').find();
     result.toArray().then((books) => {
         res.setHeader('Content-Type', 'application/json');
         res.status(200).json(books);
@@ -32,7 +32,7 @@ const createBook = async (req, res) => {
         genre: req.body.genre,
         synopsis: req.body.synopsis
     };
-    const result = await mongodb.getDatabase().db().collection('books').insertOne(book);
+    const result = await mongodb.getDatabase().db().collection('book').insertOne(book);
     if (result.acknowledged) {
         res.status(204).send();
     } else {
@@ -54,7 +54,7 @@ const updateBook = async (req, res) => {
         genre: req.body.genre,
         synopsis: req.body.synopsis
     };
-    const response = await mongodb.getDatabase().db().collection('books').replaceOne({ _id: bookId }, book);
+    const response = await mongodb.getDatabase().db().collection('book').replaceOne({ _id: bookId }, book);
     if (response.modifiedCount > 0) {
         res.status(204).send();
     } else {
@@ -65,7 +65,7 @@ const updateBook = async (req, res) => {
 const deleteBook = async (req, res) => {
     //#swagger.tags=['Reveiws']
     const bookId = new ObjectId(req.params.id);
-    const response = await mongodb.getDatabase().db().collection('books').deleteOne({ _id: bookId });
+    const response = await mongodb.getDatabase().db().collection('book').deleteOne({ _id: bookId });
     if (response.deletedCount > 0) {
         res.status(204).send();
     } else {
