@@ -21,6 +21,10 @@ process.on('unhandledRejection', (error, origin) => {
     console.log(`Handled rejection: ${error}`);
     console.dir(error);
 });
+app.use((error, request, response, next) => {
+    console(error);
+    response.status(500).json({ message: 'An internal error has occured' });
+});
 
 // Session store
 console.log('Initializing session store');
