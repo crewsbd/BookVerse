@@ -100,7 +100,7 @@ const updateBook = async (req, res) => {
 };
 
 const deleteBook = async (req, res) => {
-    //#swagger.tags=['Reveiws']
+    //#swagger.tags=['books']
     const bookId = new ObjectId(req.params.id);
     const response = await mongodb
         .getDatabase()

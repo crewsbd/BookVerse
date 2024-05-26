@@ -220,7 +220,7 @@
       },
       "delete": {
         "tags": [
-          "Reveiws"
+          "books"
         ],
         "description": "",
         "parameters": [
