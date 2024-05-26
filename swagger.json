@@ -353,10 +353,16 @@
             "schema": {
               "type": "object",
               "properties": {
-                "data1": {
+                "id": {
                   "example": "any"
                 },
-                "data2": {
+                "name": {
+                  "example": "any"
+                },
+                "profileUrl": {
+                  "example": "any"
+                },
+                "authProvider": {
                   "example": "any"
                 }
               }

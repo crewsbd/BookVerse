@@ -63,8 +63,11 @@ const updateUser = async (req, res) => {
     const userID = new ObjectId(req.params.id);
     // ! Change these dependant on how users are formatted in the database.
     const user = {
-        data1: req.body.data1,
-        data2: req.body.data2,
+        oauthID: req.body.id,
+        name: req.body.name,
+        // userName: profile.username,
+        profileUrl: req.body.profileUrl,
+        authProvider: req.body.authProvider,
     };
     const response = await mongodb
         .getDatabase()
