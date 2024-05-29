@@ -1,27 +1,31 @@
 {
-  "name": "bookverse",
-  "version": "1.0.0",
-  "description": "The BookVerse API will serve as the backend for a hypothetical thick client web app centered on storing book information as well as users, user collections and user reviews.",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node swagger.js && node server.js"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "body-parser": "^1.20.2",
-    "connect-mongodb-session": "^5.0.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "express-session": "^1.18.0",
-    "mongodb": "^6.6.2",
-    "mongoose": "^8.4.0",
-    "mongoose-validators": "^0.1.0",
-    "passport": "^0.7.0",
-    "passport-github2": "^0.1.12",
-    "swagger-autogen": "^2.23.7",
-    "swagger-ui-express": "^5.0.0"
-  }
+    "name": "bookverse",
+    "version": "1.0.0",
+    "description": "The BookVerse API will serve as the backend for a hypothetical thick client web app centered on storing book information as well as users, user collections and user reviews.",
+    "main": "server.js",
+    "scripts": {
+        "test": "jest",
+        "start": "node swagger.js && node server.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "^1.20.2",
+        "connect-mongodb-session": "^5.0.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "express": "^4.19.2",
+        "express-session": "^1.18.0",
+        "mongodb": "^6.6.2",
+        "mongoose": "^8.4.0",
+        "mongoose-validators": "^0.1.0",
+        "passport": "^0.7.0",
+        "passport-github2": "^0.1.12",
+        "swagger-autogen": "^2.23.7",
+        "swagger-ui-express": "^5.0.0"
+    },
+    "devDependencies": {
+        "@types/jest": "^29.5.12",
+        "jest": "^29.7.0"
+    }
 }
