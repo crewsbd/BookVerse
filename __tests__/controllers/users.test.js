@@ -143,7 +143,7 @@ describe('Users controller', () => {
                 }
             ];
 
-            mockDb.insertOne();
+            mockDb.insertOne().mockResolvedValue(users);
 
             await createUser(req, res); // Call the getAll function with mock req and res
 
