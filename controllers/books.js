@@ -23,24 +23,30 @@ const getAll = async (req, res) => {
 const getSingle = async (req, res) => {
     //#swagger.tags=['books']
     const bookId = new ObjectId(req.params.id);
+    console.dir(bookId);
     const result = await mongodb
         .getDatabase()
         .db()
         .collection('book')
         .find({ _id: bookId });
-    result
+
+    await result
         .toArray()
         .then((book) => {
+            console.log("NOW IN ARRAY FORM!!!")
             if(book[0]) {
+                console.log("SUCCESS")
                 res.setHeader('Content-Type', 'application/json');
                 res.status(200).json(book[0]);
             }
             else {
+                console.log("FAILURE")
                 res.status(404).json({ message: 'Book not found' });
             }
  
         })
         .catch((error) => {
+            console.log("OH NOE!!!!")
             res.status(404).json({ message: 'User not found' });
         });
 };
@@ -63,7 +69,7 @@ const createBook = async (req, res) => {
         .collection('book')
         .insertOne(book);
     if (result.acknowledged) {
-        res.status(204).send();
+        res.status(204).json({id: result.insertedId});
     } else {
         res.status(500).json(
             response.error || 'Some error occurred while inserting the book.'

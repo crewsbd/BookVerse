@@ -11,7 +11,7 @@ let database;
  * @returns { import('mongodb').MongoClient}
  */
 const initDatabase = (callback) => {
-  console.log(`Initializing Mongo2`);
+  console.log(`Initializing Mongo ${process.env.MONGODB_URI}`);
   if (database) {
     console.log("DB is already initialized!");
     return callback(null, database);
@@ -19,11 +19,13 @@ const initDatabase = (callback) => {
   MongoClient.connect(process.env.MONGODB_URI)
     .then((client) => {
       database = client;
+      console.log('connected')
       callback(null, database);
     })
     .catch((err) => {
       callback(err);
     });
+
 };
 
 /**
