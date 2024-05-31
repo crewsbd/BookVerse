@@ -3,7 +3,7 @@ const mongodb = require('../../database');
 const jestmock = require('@jest-mock/express');
 const controller = require('../../controllers/books');
 
-describe('Post book', () => {
+describe('Book controller', () => {
     let database;
     let docID;
     let newDocID;
@@ -58,6 +58,7 @@ describe('Post book', () => {
         expect(response.json).toHaveBeenCalled();
     }, 10000);
 
+    // GET tests
     test('Check if the book is retrieved', async () => {
         // Set up the req and res
         request.params.id = docID;
@@ -72,6 +73,23 @@ describe('Post book', () => {
         expect(response.status).toHaveBeenCalledWith(200);
         expect(response.json).toHaveBeenCalled();
         expect(newDocID === docID); // Retrieved the right one?
+    }, 10000);
+
+    test('Check if all books runs', async () => {
+        // Set up the req and res
+        let results;
+        response.json = jest.fn((json) => {
+            results = json;
+        });
+
+        // Run the controller
+        await controller.getAll(request, response);
+
+        // Test results
+        // TODO: This doesn't work because of controller using .then method. Need to figure out how to test with that.
+        // expect(response.status).toHaveBeenCalledWith(200);
+        //expect(response.json).toHaveBeenCalled();
+        //expect(results); // Retrieved the right one?
     }, 10000);
 
     test('Fail gracefully on 404', async () => {
