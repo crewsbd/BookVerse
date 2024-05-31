@@ -73,6 +73,7 @@ const updateUser = async (req, res) => {
         .db()
         .collection('user')
         .replaceOne({ _id: userID }, user);
+        
     if (response.modifiedCount > 0) {
         res.status(204).send();
     } else {
