@@ -2,7 +2,6 @@ const promisify = require('util').promisify;
 const mongodb = require('../../database');
 const jestmock = require('@jest-mock/express');
 const controller = require('../../controllers/books');
-const { mongo } = require('mongoose');
 
 describe('Post book', () => {
     let database;
@@ -34,7 +33,6 @@ describe('Post book', () => {
     beforeEach(() => {
         // Reset these
         request = jestmock.getMockReq();
-        //console.dir(request);
         response = jestmock.getMockRes().res;
     });
 
@@ -50,7 +48,6 @@ describe('Post book', () => {
         request.body = newBook;
         response.json = jest.fn((json) => {
             docID = json.id;
-            console.log('stored ' + docID); // need this for later
         });
 
         // Run the controller
@@ -66,7 +63,6 @@ describe('Post book', () => {
         request.params.id = docID;
         response.json = jest.fn((json) => {
             newDocID = json.id;
-            console.log('retrieved ' + docID); // need this for later
         });
 
         // Run the controller
