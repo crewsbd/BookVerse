@@ -61,6 +61,6 @@ const BookSchema = new Schema({
     authProvider: String
 });
 
-const Books = model('Book', BookSchema, 'books');
+const Books = model('Book', BookSchema, 'book');
 
 module.exports = Books;
