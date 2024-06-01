@@ -6,10 +6,12 @@ const getAll = async (req, res) => {
     const result = await mongodb.getDatabase().db().collection('book').find();
     result.toArray().then((books) => {
         if(books[0]) {
+            console.log("SUCCESS")
             res.setHeader('Content-Type', 'application/json');
             res.status(200).json(books);
         }
         else {
+            console.log("FAILURE")
             res.status(404).json({ message: 'No books found' });
         }
     });
@@ -28,7 +30,8 @@ const getSingle = async (req, res) => {
         .db()
         .collection('book')
         .find({ _id: bookId });
-    result
+
+    await result
         .toArray()
         .then((book) => {
             if(book[0]) {
@@ -63,7 +66,7 @@ const createBook = async (req, res) => {
         .collection('book')
         .insertOne(book);
     if (result.acknowledged) {
-        res.status(204).send();
+        res.status(204).json({id: result.insertedId});
     } else {
         res.status(500).json(
             response.error || 'Some error occurred while inserting the book.'
