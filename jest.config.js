@@ -195,6 +195,8 @@ const config = {
     // watchman: true,
 };
 
-module.exports = {
-  preset: '@shelf/jest-mongodb',
-};
+module.exports = config;
+
+// {
+//   preset: '@shelf/jest-mongodb',
+// };
