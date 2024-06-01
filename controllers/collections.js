@@ -45,15 +45,15 @@ const getAll = async (req, res) => {
                 },
             },
         ]);
-    console.dir(result);
+    //console.dir(result);
 
-    result.toArray().then((collection) => {
+    return result.toArray().then((collection) => {
         if (collection[0]) {
-            console.log('SUCCESS');
+            console.log('SUCCESS getAll toArray');
             res.setHeader('Content-Type', 'application/json');
-            res.status(200).json(collection);
+            res.status(200).json(collection); // Include return so it can be tested.
         } else {
-            console.log('FAILURE');
+            console.log('FAILURE: getAll toArray');
             res.status(404).json({ message: 'No collections found' });
         }
     });
@@ -136,10 +136,10 @@ const createCollection = async (req, res) => {
             }),
         };
     } else {
+        console.log("Error mapping array")
         return res
             .status(500)
             .json(
-                response.error ||
                     'Some error occurred while inserting the book.'
             );
     }

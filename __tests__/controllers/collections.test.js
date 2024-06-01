@@ -10,6 +10,7 @@ describe('Collections Controller', () => {
     const newCollection = {
         name: 'Test Collection',
         description: 'A test collection of books',
+        bookList: ['6646462b5878f42691955e07', '6646462b5878f42691955e03' ]
     };
     let request;
     let response;
@@ -52,7 +53,7 @@ describe('Collections Controller', () => {
             newDocID = json.id;
         });
 
-        await controller.getSingleCollection(request, response);
+        await controller.getSingle(request, response);
 
         expect(response.status).toHaveBeenCalledWith(200);
         expect(response.json).toHaveBeenCalled();
@@ -65,7 +66,7 @@ describe('Collections Controller', () => {
             results = json;
         });
 
-        await controller.getAllCollections(request, response);
+        await controller.getAll(request, response);
 
         expect(response.status).toHaveBeenCalledWith(200);
         expect(response.json).toHaveBeenCalled();
@@ -75,7 +76,7 @@ describe('Collections Controller', () => {
     test('Fail gracefully on 404', async () => {
         request.params.id = 'ffffffffffffffffffffffff';
 
-        await controller.getSingleCollection(request, response);
+        await controller.getSingle(request, response);
 
         expect(response.status).toHaveBeenCalledWith(404);
     }, 10000);
