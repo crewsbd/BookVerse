@@ -1,5 +1,6 @@
 {
     "jest.pathToJest": "node_modules/.bin/jest",
     "jest.enableCodeLens": true,
-    "jest.runMode": "on-demand"
+    "jest.runMode": "on-demand",
+    "liveServer.settings.port": 5501
 }
