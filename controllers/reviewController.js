@@ -9,7 +9,7 @@ async function insertSampleReview(req, res) {
         _id: new ObjectId(), 
         userId: new ObjectId(req.body.userId), 
         bookId: new ObjectId(req.body.bookId), 
-        rating: req.body.rating, 
+        rating:  req.body.rating, 
         comment: req.body.comment 
     }; 
     await reviewsCollection.insertOne(sampleReview); 

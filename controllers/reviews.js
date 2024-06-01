@@ -3,7 +3,47 @@ const ObjectId = require('mongodb').ObjectId;
 
 const getAll = async (req, res) => {
     //#swagger.tags=['Reviews']
-    const result = await mongodb.getDatabase().db().collection('reviews').find();
+    // const result = await mongodb.getDatabase().db().collection('reviews').find();
+
+    const result = await mongodb
+        .getDatabase()
+        .db()
+        .collection('reviews')
+        .aggregate([
+            {
+                $lookup: {
+                    from: 'user',
+                    localField: 'userId',
+                    foreignField: '_id',
+                    as: 'reviewer',
+                },
+            },
+            {
+                $unwind: '$reviewer',
+            },
+            {
+                $lookup: {
+                    from: 'book',
+                    localField: 'bookId',
+                    foreignField: '_id',
+                    as: 'book',
+                },
+            },
+            {
+                $unwind: '$book',
+            },
+            {
+                $project: {
+                    _id: 1,
+                    reviewer: '$reviewer.name',
+                    book: '$book.title',
+                    authorFirstName: '$book.authorFirstName',
+                    authorLastName: '$book.authorLastName',
+                    rating: 1,
+                    comment: 1,
+                },
+            },
+        ]);
     result.toArray().then((reviews) => {
         if (reviews[0]) {
             res.setHeader('Content-Type', 'application/json');
@@ -18,8 +58,8 @@ const getSingle = async (req, res) => {
     //#swagger.tags=['Reviews']
     const reviewId = new ObjectId(req.params.id);
     const result = await mongodb
-        .getDatabase().
-        db()
+        .getDatabase()
+        .db()
         .collection('reviews')
         .findOne({ _id: reviewId });
 
@@ -33,11 +73,12 @@ const getSingle = async (req, res) => {
 
 const createReview = async (req, res) => {
     //#swagger.tags=['Reviews']
-    // ! Change these dependant on how reveiws are formatted in the database. 
+    // ! Change these dependant on how reveiws are formatted in the database.
     const review = {
-        userName: req.body.userName,
-        reviewText: req.body.reviewText,
-        reviewScore: req.body.reviewText,
+        userId: new ObjectId(req.body.userId),
+        bookId: new ObjectId(req.body.bookId),
+        rating: req.body.rating,
+        comment: req.body.comment,
     };
     const response = await mongodb
         .getDatabase()
@@ -59,9 +100,10 @@ const updateReview = async (req, res) => {
     const reveiwID = new ObjectId(req.params.id);
     // ! Change these dependant on how reveiws are formatted in the database.
     const review = {
-        userName: req.body.userName,
-        reviewText: req.body.reviewText,
-        reviewScore: req.body.reviewText,
+        userId: new ObjectId(req.body.userId),
+        bookId: new ObjectId(req.body.bookId),
+        rating: req.body.rating,
+        comment: req.body.comment,
     };
     const response = await mongodb
         .getDatabase()
@@ -100,7 +142,7 @@ module.exports = {
     getSingle,
     createReview,
     updateReview,
-    deleteReview
-}
+    deleteReview,
+};
 
 // testing
