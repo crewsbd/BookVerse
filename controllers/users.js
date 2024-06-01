@@ -21,15 +21,14 @@ const getSingle = async (req, res) => {
         .getDatabase()
         .db()
         .collection('user')
-        .find({ _id: userId });
-    result.toArray().then((users) => {
-        if (users[0]) {
+        .findOne({ _id: userId });
+
+    if (result) {
         res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(users[0]); }
-        else {
-            res.status(404).json({message: `User ${req.params.id} not found`})
-        }
-    });
+        res.status(200).json(result);
+    } else {
+        res.status(404).json({ message: `User ${req.params.id} not found` });
+    }
 };
 
 const createUser = async (req, res) => {
@@ -74,6 +73,7 @@ const updateUser = async (req, res) => {
         .db()
         .collection('user')
         .replaceOne({ _id: userID }, user);
+        
     if (response.modifiedCount > 0) {
         res.status(204).send();
     } else {
