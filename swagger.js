@@ -6,10 +6,10 @@ const doc = {
         title: 'BookVerse API',
         description: 'BookVerse API',
     },
-    //host: `localhost:3000`,
-    host: 'https://bookverse-xetd.onrender.com',
+    host: `${process.env.HOST}${process.env.DEV === 'true' ? ':' + process.env.PORT : ''}`,
+    //host: 'bookverse-bzgy.onrender.com/',
     //schemes: ['https', 'http'],
-    schemes: ['https'],
+    schemes: [process.env.DEV === 'true' ? 'http' : 'https'],
 };
 
 const outputFile = './swagger.json';
