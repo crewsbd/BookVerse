@@ -2,6 +2,7 @@
 require('dotenv').config();
 
 // Middleware import
+const express = require('express');
 const app = require('express')();
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -39,7 +40,9 @@ sessionStore.on('error', () => {
 });
 
 // Middleware implemented
+
 app.use(cors({ methods: 'GET,POST,PUT,PATCH,DELETE', origin: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 console.log('Setting up session');
 app.use(

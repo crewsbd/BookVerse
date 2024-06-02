@@ -37,7 +37,7 @@ const createUser = async (req, res) => {
     
     
     const user = {
-        oauthID: req.body.id,
+        oauthID: req.body.oauthid,
         name: req.body.name,
         // userName: profile.username,
         profileUrl: req.body.profileUrl,
