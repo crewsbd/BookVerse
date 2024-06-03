@@ -124,17 +124,22 @@ const createCollection = async (req, res) => {
     }
     */
 
-    let collection = new Collection();
+    let collection;
 
     if (Array.isArray(req.body.bookList)) {
-        collection.name = req.body.name;
-        collection.userId = req.body.userId;
-        collection.bookList = new Array();
+        console.log("It's an array");
+        collection = {
+            name: req.body.name,
+            userId: req.body.userId,
+            bookList: req.body.bookList.map((bookId) => {
+                return new ObjectId(bookId);
+            }),
+        };
     } else {
         console.log('Error mapping array');
         return res
             .status(500)
-            .json('Some error occurred while inserting the book.');
+            .json('Some error occurred while inserting the collection.');
     }
 
     const result = await mongodb
@@ -143,10 +148,11 @@ const createCollection = async (req, res) => {
         .collection('collection')
         .insertOne(collection);
     if (result.acknowledged) {
-        res.status(204).json({ created: result.insertedId });
+        res.status(201).json({ created: result.insertedId });
     } else {
         res.status(500).json(
-            response.error || 'Some error occurred while inserting the book.'
+            response.error ||
+                'Some error occurred while inserting the collection.'
         );
     }
 };
@@ -193,7 +199,7 @@ const updateCollection = async (req, res) => {
         .replaceOne({ _id: collectionId }, collection);
 
     if (response.modifiedCount > 0) {
-        res.status(204).json({ updated: `${req.params.id}` });
+        res.status(200).json({ updated: `${req.params.id}` });
     } else {
         console.log(response.modifiedCount);
         res.status(500).json(
@@ -213,7 +219,7 @@ const deleteCollection = async (req, res) => {
         .collection('collection')
         .deleteOne({ _id: collectionId });
     if (response.deletedCount > 0) {
-        res.status(204).json({ deleted: `${req.params.id}` });
+        res.status(200).json({ deleted: `${req.params.id}` });
     } else {
         res.status(500).json(
             response.error ||
