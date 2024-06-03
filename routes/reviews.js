@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const authenticationRouter = require('./authentication.js');
 const reviewsController = require('../controllers/reviews.js');
 const authentication = require('../authentication');
 const validation = require('../validation/review.js');

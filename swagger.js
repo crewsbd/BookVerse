@@ -6,6 +6,7 @@ const doc = {
         title: 'BookVerse API',
         description: 'BookVerse API',
     },
+    // DON'T CHANGE THIS
     host: `${process.env.HOST}${process.env.DEV === 'true' ? ':' + process.env.PORT : ''}`,
     //host: 'bookverse-bzgy.onrender.com/',
     //schemes: ['https', 'http'],

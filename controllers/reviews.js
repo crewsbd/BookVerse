@@ -2,8 +2,59 @@ const mongodb = require('../database');
 const ObjectId = require('mongodb').ObjectId;
 
 const getAll = async (req, res) => {
-    //#swagger.tags=['Reviews']
-    const result = await mongodb.getDatabase().db().collection('reviews').find();
+    //#swagger.tags=['reviews']
+    // const result = await mongodb
+    //     .getDatabase()
+    //     .db()
+    //     .collection('reviews')
+    //     .find();
+
+    const result = await mongodb
+        .getDatabase()
+        .db()
+        .collection('reviews')
+        .aggregate([
+            {
+                $lookup: {
+                    from: 'book',
+                    localField: 'bookId',
+                    foreignField: '_id',
+                    as: 'book',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'user',
+                    localField: 'userId',
+                    foreignField: '_id',
+                    as: 'user',
+                },
+            },
+            {
+                $unwind: '$book',
+            },
+            {
+                $unwind: '$user',
+            },
+            {
+                $project: {
+                    book: {
+                        _id: 1,
+                        title: 1,
+                        authorFirstName: 1,
+                        authorLastName: 1,
+                        genre: 1,
+                    },
+                    rating: 1,
+                    text: 1,
+                    user: {
+                        _id: 1,
+                        name: 1,
+                    },
+                },
+            },
+        ]);
+
     result.toArray().then((reviews) => {
         if (reviews[0]) {
             res.setHeader('Content-Type', 'application/json');
@@ -15,29 +66,92 @@ const getAll = async (req, res) => {
 };
 
 const getSingle = async (req, res) => {
-    //#swagger.tags=['Reviews']
+    //#swagger.tags=['reviews']
     const reviewId = new ObjectId(req.params.id);
     const result = await mongodb
-        .getDatabase().
-        db()
+        .getDatabase()
+        .db()
         .collection('reviews')
-        .findOne({ _id: reviewId });
+        .aggregate([
+            {
+                $match: { _id: new ObjectId(reviewId) },
+            },
+            {
+                $lookup: {
+                    from: 'book',
+                    localField: 'bookId',
+                    foreignField: '_id',
+                    as: 'book',
+                },
+            },
+            {
+                $lookup: {
+                    from: 'user',
+                    localField: 'userId',
+                    foreignField: '_id',
+                    as: 'user',
+                },
+            },
+            {
+                $unwind: '$book',
+            },
+            {
+                $unwind: '$user',
+            },
+            {
+                $project: {
+                    book: {
+                        _id: 1,
+                        title: 1,
+                        authorFirstName: 1,
+                        authorLastName: 1,
+                        genre: 1,
+                    },
+                    rating: 1,
+                    text: 1,
+                    user: {
+                        _id: 1,
+                        name: 1,
+                    },
+                },
+            },
+        ]);
 
-    if (result) {
-        res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(result);
-    } else {
-        res.status(404).json({ message: `Review ${req.params.id} not found` });
-    }
+        await result
+        .toArray()
+        .then((review) => {
+            if (review[0]) {
+                res.setHeader('Content-Type', 'application/json');
+                res.status(200).json(review[0]);
+            } else {
+                res.status(404).json({ message: 'Review not found' });
+            }
+        })
+        .catch((error) => {
+            res.status(404).json({ message: 'Review not found' });
+        });
 };
 
 const createReview = async (req, res) => {
-    //#swagger.tags=['Reviews']
-    // ! Change these dependant on how reveiws are formatted in the database. 
+    //#swagger.tags=['reviews']
+
+    /* #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Add new review',
+        schema: {
+            $userId: '665220f5a5130bbd1e9fef37',
+            $bookId: '6646462b5878f42691955e07',
+            $rating: 4,
+            $text: 'Great book'
+        }
+    }
+    */
+
     const review = {
-        userName: req.body.userName,
-        reviewText: req.body.reviewText,
-        reviewScore: req.body.reviewText,
+        userId: req.body.userId,
+        bookId: req.body.bookId,
+        rating: req.body.rating,
+        text: req.body.text,
     };
     const response = await mongodb
         .getDatabase()
@@ -55,14 +169,29 @@ const createReview = async (req, res) => {
 };
 
 const updateReview = async (req, res) => {
-    //#swagger.tags=['Reviews']
+    //#swagger.tags=['reviews']
+
+    /* #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Add new review',
+        schema: {
+            $userId: '665220f5a5130bbd1e9fef37',
+            $bookId: '6646462b5878f42691955e07',
+            $rating: 4,
+            $text: 'Great book'
+        }
+    }
+    */
+
     const reveiwID = new ObjectId(req.params.id);
-    // ! Change these dependant on how reveiws are formatted in the database.
+
     const review = {
-        userName: req.body.userName,
-        reviewText: req.body.reviewText,
-        reviewScore: req.body.reviewText,
+        userId: req.body.userId,
+        bookId: req.body.bookId,
+        rating: req.body.rating,
+        text: req.body.text,
     };
+
     const response = await mongodb
         .getDatabase()
         .db()
@@ -70,7 +199,7 @@ const updateReview = async (req, res) => {
         .replaceOne({ _id: reveiwID }, review);
 
     if (response.modifiedCount > 0) {
-        res.status(204).send();
+        res.status(204).json({ deleted: `${req.params.id}` });
     } else {
         res.status(500).json(
             response.error || 'Some error occurred while updating the review.'
@@ -79,7 +208,7 @@ const updateReview = async (req, res) => {
 };
 
 const deleteReview = async (req, res) => {
-    //#swagger.tags=['Reviews']
+    //#swagger.tags=['reviews']
     const reviewID = new ObjectId(req.params.id);
     const response = await mongodb
         .getDatabase()
@@ -87,7 +216,7 @@ const deleteReview = async (req, res) => {
         .collection('reviews')
         .deleteOne({ _id: reviewID });
     if (response.deletedCount > 0) {
-        res.status(204).send();
+        res.status(204).json({ deleted: `${req.params.id}` });
     } else {
         res.status(500).json(
             response.error || 'Some error occurred while deleting the review.'
@@ -100,7 +229,7 @@ module.exports = {
     getSingle,
     createReview,
     updateReview,
-    deleteReview
-}
+    deleteReview,
+};
 
 // testing

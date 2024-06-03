@@ -11,20 +11,10 @@
     "http"
   ],
   "paths": {
-    "/api-docs/": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
     "/authentication/login": {
       "get": {
         "tags": [
-          "Authentication"
+          "authentication"
         ],
         "description": "",
         "responses": {
@@ -37,22 +27,12 @@
     "/authentication/logout": {
       "get": {
         "tags": [
-          "Authentication"
+          "authentication"
         ],
         "description": "",
         "responses": {
           "default": {
             "description": ""
-          }
-        }
-      }
-    },
-    "/authentication/": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
           }
         }
       }
@@ -422,7 +402,7 @@
     "/reviews/": {
       "get": {
         "tags": [
-          "Reviews"
+          "reviews"
         ],
         "description": "",
         "produces": [
@@ -442,29 +422,49 @@
       },
       "post": {
         "tags": [
-          "Reviews"
+          "reviews"
         ],
         "description": "",
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "description": "Add new review",
             "schema": {
               "type": "object",
               "properties": {
-                "userName": {
-                  "example": "any"
+                "userId": {
+                  "type": "string",
+                  "example": "665220f5a5130bbd1e9fef37"
                 },
-                "reviewText": {
-                  "example": "any"
+                "bookId": {
+                  "type": "string",
+                  "example": "6646462b5878f42691955e07"
+                },
+                "rating": {
+                  "type": "number",
+                  "example": 4
+                },
+                "text": {
+                  "type": "string",
+                  "example": "Great book"
                 }
-              }
+              },
+              "required": [
+                "userId",
+                "bookId",
+                "rating",
+                "text"
+              ]
             }
           }
         ],
         "responses": {
           "204": {
             "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "401": {
             "description": "Unauthorized"
@@ -478,7 +478,7 @@
     "/reviews/{id}": {
       "get": {
         "tags": [
-          "Reviews"
+          "reviews"
         ],
         "description": "",
         "produces": [
@@ -506,7 +506,7 @@
       },
       "put": {
         "tags": [
-          "Reviews"
+          "reviews"
         ],
         "description": "",
         "parameters": [
@@ -519,22 +519,42 @@
           {
             "name": "body",
             "in": "body",
+            "description": "Add new review",
             "schema": {
               "type": "object",
               "properties": {
-                "userName": {
-                  "example": "any"
+                "userId": {
+                  "type": "string",
+                  "example": "665220f5a5130bbd1e9fef37"
                 },
-                "reviewText": {
-                  "example": "any"
+                "bookId": {
+                  "type": "string",
+                  "example": "6646462b5878f42691955e07"
+                },
+                "rating": {
+                  "type": "number",
+                  "example": 4
+                },
+                "text": {
+                  "type": "string",
+                  "example": "Great book"
                 }
-              }
+              },
+              "required": [
+                "userId",
+                "bookId",
+                "rating",
+                "text"
+              ]
             }
           }
         ],
         "responses": {
           "204": {
             "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "401": {
             "description": "Unauthorized"
@@ -546,7 +566,7 @@
       },
       "delete": {
         "tags": [
-          "Reviews"
+          "reviews"
         ],
         "description": "",
         "parameters": [
@@ -600,22 +620,42 @@
           {
             "name": "body",
             "in": "body",
+            "description": "Add new collection",
             "schema": {
               "type": "object",
               "properties": {
-                "bookList": {
-                  "example": "any"
-                },
                 "name": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "John Roe"
+                },
+                "userId": {
+                  "type": "string",
+                  "example": "665220f5a5130bbd1e9fef37"
+                },
+                "bookList": {
+                  "type": "array",
+                  "example": [
+                    "6646462b5878f42691955e07"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
                 }
-              }
+              },
+              "required": [
+                "name",
+                "userId",
+                "bookList"
+              ]
             }
           }
         ],
         "responses": {
           "204": {
             "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "401": {
             "description": "Unauthorized"
@@ -670,22 +710,42 @@
           {
             "name": "body",
             "in": "body",
+            "description": "Add new collection",
             "schema": {
               "type": "object",
               "properties": {
-                "bookList": {
-                  "example": "any"
-                },
                 "name": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "John Roe"
+                },
+                "userId": {
+                  "type": "string",
+                  "example": "665220f5a5130bbd1e9fef37"
+                },
+                "bookList": {
+                  "type": "array",
+                  "example": [
+                    "6646462b5878f42691955e07"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
                 }
-              }
+              },
+              "required": [
+                "name",
+                "userId",
+                "bookList"
+              ]
             }
           }
         ],
         "responses": {
           "204": {
             "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "401": {
             "description": "Unauthorized"

@@ -1,18 +1,15 @@
 const router = require('express').Router();
 const passport = require('passport');
+const authentication = require('../authentication');
 
 // Login route
-router.get(
-    '/login',
-    passport.authenticate('github'),
-    (request, response) => {
-        //#swagger.tags=['Authentication']
-    }
-);
+router.get('/login', passport.authenticate('github'), (request, response) => {
+    //#swagger.tags=['authentication']
+});
 
 // Logout route
 router.get('/logout', function (request, response, next) {
-    //#swagger.tags=['Authentication']
+    //#swagger.tags=['authentication']
     request.logout(function (error) {
         if (error) {
             return next(error);
@@ -36,7 +33,14 @@ router.get(
     }
 );
 router.get('/', (request, response) => {
-    response.status(200).json({ message: 'Login Status' });
+    // #swagger.ignore = true
+    response.status(200).json({
+        message: `${
+            request.session.user === undefined
+                ? 'Logged out'
+                : `Logged in as ${request.session.user.username}`
+        } `,
+    });
 });
 
 module.exports = router;

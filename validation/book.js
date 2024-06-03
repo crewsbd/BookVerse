@@ -24,11 +24,14 @@ const validators = [
         .withMessage('Bad first name'),
     validator
         .body('publicationDate')
-        .trim()
-        .escape()
+        .toDate()
         .exists()
         .isISO8601()
         .withMessage('Bad date'),
+    validator
+        .body('isbn')
+        .isISBN()
+        .withMessage('Bad ISNB'),
 ];
 
 /**

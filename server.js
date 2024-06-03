@@ -63,13 +63,8 @@ app.use('/', router);
 console.log('Setting up root route');
 app.get('/', (request, response, next) => {
     console.log('ENDPOINT GET /');
-    response.status(200).json({ message: 'Stub. Replace this with a router.' });
+    response.status(200).json({ message: 'Welcome to BookVerse API 1.0' });
 });
-
-// Start API
-// app.listen(process.env.PORT, () => {
-//     console.log(`API server listening on localhost:${process.env.PORT}`);
-// });
 
 // Initialize the database
 database.initDatabase((error) => {
@@ -79,7 +74,7 @@ database.initDatabase((error) => {
     } else {
         // Start the server
         app.listen(process.env.PORT, () => {
-            console.log(`Server listening on localhost:${process.env.PORT}`);
+            console.log(`Server listening on ${process.env.HOST}:${process.env.PORT}`);
         });
     }
 });

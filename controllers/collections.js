@@ -1,14 +1,8 @@
 const mongodb = require('../database');
-const ObjectId = require('mongodb').ObjectId;
+const ObjectId = require('bson').ObjectId;
 
 const getAll = async (req, res) => {
     //#swagger.tags=['collections']
-
-    // const result = await mongodb
-    //     .getDatabase()
-    //     .db()
-    //     .collection('collection')
-    //     .find();
 
     const result = await mongodb
         .getDatabase()
@@ -67,11 +61,6 @@ const getAll = async (req, res) => {
 const getSingle = async (req, res) => {
     //#swagger.tags=['collections']
     const collectionId = new ObjectId(req.params.id);
-    // const result = await mongodb
-    //     .getDatabase()
-    //     .db()
-    //     .collection('collection')
-    //     .find({ _id: collectionId });
 
     const result = await mongodb
         .getDatabase()
@@ -116,32 +105,39 @@ const getSingle = async (req, res) => {
                 res.setHeader('Content-Type', 'application/json');
                 res.status(200).json(collection[0]);
             } else {
-                res.status(404).json({ message: 'Book not found' });
+                res.status(404).json({ message: 'Collection not found' });
             }
         })
         .catch((error) => {
-            res.status(404).json({ message: 'User not found' });
+            res.status(404).json({ message: 'Collection not found' });
         });
 };
 
 const createCollection = async (req, res) => {
     //#swagger.tags=['collections']
-    let collection;
+
+    /* #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Add new collection',
+        schema: {
+            $name: 'John Roe',
+            $userId: '665220f5a5130bbd1e9fef37',
+            $bookList: [ '6646462b5878f42691955e07' ]
+        }
+    }
+    */
+
+    let collection = new Collection();
 
     if (Array.isArray(req.body.bookList)) {
-        collection = {
-            name: req.body.name,
-            bookList: req.body.bookList.map((bookId) => {
-                return new ObjectId(bookId);
-            }),
-        };
+        collection.name = req.body.name;
+        collection.userId = req.body.userId;
+        collection.bookList = new Array();
     } else {
-        console.log("Error mapping array")
+        console.log('Error mapping array');
         return res
             .status(500)
-            .json(
-                    'Some error occurred while inserting the book.'
-            );
+            .json('Some error occurred while inserting the book.');
     }
 
     const result = await mongodb
@@ -150,7 +146,7 @@ const createCollection = async (req, res) => {
         .collection('collection')
         .insertOne(collection);
     if (result.acknowledged) {
-        res.status(204).json({ id: result.insertedId });
+        res.status(204).json({ created: result.insertedId });
     } else {
         res.status(500).json(
             response.error || 'Some error occurred while inserting the book.'
@@ -160,7 +156,19 @@ const createCollection = async (req, res) => {
 
 const updateCollection = async (req, res) => {
     //#swagger.tags=['collections']
-    const collectionId = new ObjectId(req.params.id);
+
+    /* #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Add new collection',
+        schema: {
+            $name: 'John Roe',
+            $userId: '665220f5a5130bbd1e9fef37',
+            $bookList: [ '6646462b5878f42691955e07' ]
+        }
+    }
+    */
+
+    const collectionId = new ObjectId('' + req.params.id);
     // ! Change these dependant on how reveiws are formatted in the database.
     let collection;
 
@@ -189,7 +197,7 @@ const updateCollection = async (req, res) => {
         .replaceOne({ _id: collectionId }, collection);
 
     if (response.modifiedCount > 0) {
-        res.status(204).send();
+        res.status(204).json({ updated: `${req.params.id}` });
     } else {
         console.log(response.modifiedCount);
         res.status(500).json(
@@ -201,14 +209,14 @@ const updateCollection = async (req, res) => {
 
 const deleteCollection = async (req, res) => {
     //#swagger.tags=['collections']
-    const collectionId = new ObjectId(req.params.id);
+    const collectionId = new ObjectId('' + req.params.id); // Doesn't want a number.
     const response = await mongodb
         .getDatabase()
         .db()
         .collection('collection')
         .deleteOne({ _id: collectionId });
     if (response.deletedCount > 0) {
-        res.status(204).send();
+        res.status(204).json({ deleted: `${req.params.id}` });
     } else {
         res.status(500).json(
             response.error ||
