@@ -1,7 +1,7 @@
 const validator = require('express-validator');
 
 const validators = [
-    validator.body('oauthid').exists().isNumeric().withMessage('Bad oauthID'),
+    validator.body('oauthID').exists().isNumeric().withMessage('Bad oauthID'),
     validator
         .body('name')
         .trim()
@@ -12,14 +12,10 @@ const validators = [
         .withMessage('Bad name'),
     validator
         .body('profileUrl')
-        .customSanitizer((url) => {
-            return decodeURIComponent(url);
-        })
         .trim()
-        .escape()
         .exists()
         .isString()
-        //.isURL()
+        .isURL()
         .withMessage('Bad profile url'),
     validator
         .body('authProvider')

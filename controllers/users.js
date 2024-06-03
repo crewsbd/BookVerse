@@ -33,53 +33,97 @@ const getSingle = async (req, res) => {
 
 const createUser = async (req, res) => {
     //#swagger.tags=['users']
-    // ! Change these dependant on how users are formatted in the database.
-    
-    
+
+    /* #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Add new user',
+        schema: {
+            $oauthID: 12345678,
+            $name: 'Jane Doe',
+            $profileUrl: 'https://github.com/doej',
+            $authProvider: 'github',
+            $__v: 0
+        }
+    }
+    */
+
     const user = {
-        oauthID: req.body.oauthid,
+        oauthID: req.body.oauthID,
         name: req.body.name,
-        // userName: profile.username,
         profileUrl: req.body.profileUrl,
         authProvider: req.body.authProvider,
+        __v: req.body.__v,
     };
-    const response = await mongodb
-        .getDatabase()
-        .db()
-        .collection('user')
-        .insertOne(user);
-    if (response.acknowledged) {
-        res.status(204).send();
-    } else {
-        res.status(500).json(
-            response.error || 'Some error occurred while updating the user.'
-        );
+
+    try {
+        const response = await mongodb
+            .getDatabase()
+            .db()
+            .collection('user')
+            .insertOne(user);
+        if (response.acknowledged) {
+            res.status(204).send();
+        } else {
+            res.status(500).json(
+                response.error || 'Some error occurred while updating the user.'
+            );
+        }
+    } catch (error) {
+        console.dir(error);
+        if (error.code && error.code === 11000) {
+            res.status(500).json({ error: 'Duplicate key' });
+        } else {
+            res.status(500).json({ error: 'Unanticipated error' });
+        }
     }
 };
 
 const updateUser = async (req, res) => {
     //#swagger.tags=['users']
-    const userID = new ObjectId(req.params.id);
-    // ! Change these dependant on how users are formatted in the database.
+
+    /* #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Add new user',
+        schema: {
+            $oauthID: 12345678,
+            $name: 'Jane Doe',
+            $profileUrl: 'https://github.com/doej',
+            $authProvider: 'github',
+            $__v: 0
+        }
+    }
+    */
+
+    const userID = new ObjectId('' + req.params.id);
     const user = {
-        oauthID: req.body.id,
+        oauthID: req.body.oauthID,
         name: req.body.name,
-        // userName: profile.username,
         profileUrl: req.body.profileUrl,
         authProvider: req.body.authProvider,
+        __v: req.body.__v,
     };
-    const response = await mongodb
-        .getDatabase()
-        .db()
-        .collection('user')
-        .replaceOne({ _id: userID }, user);
-        
-    if (response.modifiedCount > 0) {
-        res.status(204).send();
-    } else {
-        res.status(500).json(
-            response.error || 'Some error occurred while updating the user.'
-        );
+
+    try {
+        const response = await mongodb
+            .getDatabase()
+            .db()
+            .collection('user')
+            .replaceOne({ _id: userID }, user);
+
+        if (response.modifiedCount > 0) {
+            res.status(204).send();
+        } else {
+            res.status(500).json(
+                response.error || 'Some error occurred while updating the user.'
+            );
+        }
+    } catch (error) {
+        console.dir(error);
+        if (error.code && error.code === 11000) {
+            res.status(500).json({ error: 'Duplicate key' });
+        } else {
+            res.status(500).json({ error: 'Unanticipated error' });
+        }
     }
 };
 

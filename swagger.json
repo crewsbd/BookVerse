@@ -260,22 +260,38 @@
           {
             "name": "body",
             "in": "body",
+            "description": "Add new user",
             "schema": {
               "type": "object",
               "properties": {
-                "oauthid": {
-                  "example": "any"
+                "oauthID": {
+                  "type": "number",
+                  "example": 12345678
                 },
                 "name": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Jane Doe"
                 },
                 "profileUrl": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "https://github.com/doej"
                 },
                 "authProvider": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "github"
+                },
+                "__v": {
+                  "type": "number",
+                  "example": 0
                 }
-              }
+              },
+              "required": [
+                "oauthID",
+                "name",
+                "profileUrl",
+                "authProvider",
+                "__v"
+              ]
             }
           }
         ],
@@ -339,22 +355,38 @@
           {
             "name": "body",
             "in": "body",
+            "description": "Add new user",
             "schema": {
               "type": "object",
               "properties": {
-                "id": {
-                  "example": "any"
+                "oauthID": {
+                  "type": "number",
+                  "example": 12345678
                 },
                 "name": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Jane Doe"
                 },
                 "profileUrl": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "https://github.com/doej"
                 },
                 "authProvider": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "github"
+                },
+                "__v": {
+                  "type": "number",
+                  "example": 0
                 }
-              }
+              },
+              "required": [
+                "oauthID",
+                "name",
+                "profileUrl",
+                "authProvider",
+                "__v"
+              ]
             }
           }
         ],
