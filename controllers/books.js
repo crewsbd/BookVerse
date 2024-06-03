@@ -3,6 +3,7 @@ const ObjectId = require('mongodb').ObjectId;
 
 const getAll = async (req, res) => {
     //#swagger.tags=['books']
+    //#swagger.description = 'Get all book documents'
     const result = await mongodb.getDatabase().db().collection('book').find();
     result.toArray().then((books) => {
         if(books[0]) {
@@ -24,6 +25,7 @@ const getAll = async (req, res) => {
  */
 const getSingle = async (req, res) => {
     //#swagger.tags=['books']
+    //#swagger.description = 'Get one book document'
     const bookId = new ObjectId(req.params.id);
     const result = await mongodb
         .getDatabase()
@@ -50,6 +52,7 @@ const getSingle = async (req, res) => {
 
 const createBook = async (req, res) => {
     //#swagger.tags=['books']
+    //#swagger.description = 'Create one book document'
     const book = {
         title: req.body.title,
         authorLastName: req.body.authorLastName,
@@ -76,8 +79,8 @@ const createBook = async (req, res) => {
 
 const updateBook = async (req, res) => {
     //#swagger.tags=['books']
+    //#swagger.description = 'Update one book document'
     const bookId = new ObjectId(req.params.id);
-    // ! Change these dependant on how reveiws are formatted in the database.
     const book = {
         title: req.body.title,
         authorLastName: req.body.authorLastName,
@@ -104,6 +107,7 @@ const updateBook = async (req, res) => {
 
 const deleteBook = async (req, res) => {
     //#swagger.tags=['books']
+    //#swagger.description = 'Delete one book document'
     const bookId = new ObjectId(req.params.id);
     const response = await mongodb
         .getDatabase()

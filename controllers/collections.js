@@ -3,6 +3,7 @@ const ObjectId = require('bson').ObjectId;
 
 const getAll = async (req, res) => {
     //#swagger.tags=['collections']
+    //#swagger.description = 'Get all collection documents'
 
     const result = await mongodb
         .getDatabase()
@@ -17,9 +18,6 @@ const getAll = async (req, res) => {
                     as: 'books',
                 },
             },
-            // {
-            //     $unwind: '$books',
-            // },
             {
                 $project: {
                     _id: 1,
@@ -39,8 +37,6 @@ const getAll = async (req, res) => {
                 },
             },
         ]);
-    //console.dir(result);
-
     return result.toArray().then((collection) => {
         if (collection[0]) {
             console.log('SUCCESS getAll toArray');
@@ -60,6 +56,7 @@ const getAll = async (req, res) => {
  */
 const getSingle = async (req, res) => {
     //#swagger.tags=['collections']
+    //#swagger.description = 'Get one collection document'
     const collectionId = new ObjectId(req.params.id);
 
     const result = await mongodb
@@ -118,7 +115,7 @@ const createCollection = async (req, res) => {
 
     /* #swagger.parameters['body'] = {
         in: 'body',
-        description: 'Add new collection',
+        description: 'Create one collection document',
         schema: {
             $name: 'John Roe',
             $userId: '665220f5a5130bbd1e9fef37',
@@ -159,7 +156,7 @@ const updateCollection = async (req, res) => {
 
     /* #swagger.parameters['body'] = {
         in: 'body',
-        description: 'Add new collection',
+        description: 'Update one collection document',
         schema: {
             $name: 'John Roe',
             $userId: '665220f5a5130bbd1e9fef37',
@@ -169,7 +166,6 @@ const updateCollection = async (req, res) => {
     */
 
     const collectionId = new ObjectId('' + req.params.id);
-    // ! Change these dependant on how reveiws are formatted in the database.
     let collection;
 
     if (Array.isArray(req.body.bookList)) {
@@ -209,6 +205,7 @@ const updateCollection = async (req, res) => {
 
 const deleteCollection = async (req, res) => {
     //#swagger.tags=['collections']
+    //#swagger.description = 'Delete one collection document'
     const collectionId = new ObjectId('' + req.params.id); // Doesn't want a number.
     const response = await mongodb
         .getDatabase()

@@ -42,7 +42,7 @@
         "tags": [
           "books"
         ],
-        "description": "",
+        "description": "Get all book documents",
         "produces": [
           "application/json"
         ],
@@ -62,7 +62,7 @@
         "tags": [
           "books"
         ],
-        "description": "",
+        "description": "Create one book document",
         "parameters": [
           {
             "name": "body",
@@ -119,7 +119,7 @@
         "tags": [
           "books"
         ],
-        "description": "",
+        "description": "Get one book document",
         "produces": [
           "application/json"
         ],
@@ -147,7 +147,7 @@
         "tags": [
           "books"
         ],
-        "description": "",
+        "description": "Update one book document",
         "parameters": [
           {
             "name": "id",
@@ -208,7 +208,7 @@
         "tags": [
           "books"
         ],
-        "description": "",
+        "description": "Delete one book document",
         "parameters": [
           {
             "name": "id",
@@ -436,7 +436,7 @@
         "tags": [
           "reviews"
         ],
-        "description": "",
+        "description": "Get all review documents",
         "produces": [
           "application/json"
         ],
@@ -461,7 +461,7 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Add new review",
+            "description": "Create one review document",
             "schema": {
               "type": "object",
               "properties": {
@@ -512,7 +512,7 @@
         "tags": [
           "reviews"
         ],
-        "description": "",
+        "description": "Get one review document",
         "produces": [
           "application/json"
         ],
@@ -551,7 +551,7 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Add new review",
+            "description": "Update one review document",
             "schema": {
               "type": "object",
               "properties": {
@@ -600,7 +600,7 @@
         "tags": [
           "reviews"
         ],
-        "description": "",
+        "description": "Delete one review document",
         "parameters": [
           {
             "name": "id",
@@ -627,7 +627,7 @@
         "tags": [
           "collections"
         ],
-        "description": "",
+        "description": "Get all collection documents",
         "produces": [
           "application/json"
         ],
@@ -652,7 +652,7 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Add new collection",
+            "description": "Create one collection document",
             "schema": {
               "type": "object",
               "properties": {
@@ -703,7 +703,7 @@
         "tags": [
           "collections"
         ],
-        "description": "",
+        "description": "Get one collection document",
         "produces": [
           "application/json"
         ],
@@ -742,7 +742,7 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Add new collection",
+            "description": "Update one collection document",
             "schema": {
               "type": "object",
               "properties": {
@@ -791,7 +791,7 @@
         "tags": [
           "collections"
         ],
-        "description": "",
+        "description": "Delete one collection document",
         "parameters": [
           {
             "name": "id",

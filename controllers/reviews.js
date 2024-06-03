@@ -3,11 +3,7 @@ const ObjectId = require('mongodb').ObjectId;
 
 const getAll = async (req, res) => {
     //#swagger.tags=['reviews']
-    // const result = await mongodb
-    //     .getDatabase()
-    //     .db()
-    //     .collection('reviews')
-    //     .find();
+    //#swagger.description = 'Get all review documents'
 
     const result = await mongodb
         .getDatabase()
@@ -67,6 +63,8 @@ const getAll = async (req, res) => {
 
 const getSingle = async (req, res) => {
     //#swagger.tags=['reviews']
+    //#swagger.description = 'Get one review document'
+
     const reviewId = new ObjectId(req.params.id);
     const result = await mongodb
         .getDatabase()
@@ -137,7 +135,7 @@ const createReview = async (req, res) => {
 
     /* #swagger.parameters['body'] = {
         in: 'body',
-        description: 'Add new review',
+        description: 'Create one review document',
         schema: {
             $userId: '665220f5a5130bbd1e9fef37',
             $bookId: '6646462b5878f42691955e07',
@@ -173,7 +171,7 @@ const updateReview = async (req, res) => {
 
     /* #swagger.parameters['body'] = {
         in: 'body',
-        description: 'Add new review',
+        description: 'Update one review document',
         schema: {
             $userId: '665220f5a5130bbd1e9fef37',
             $bookId: '6646462b5878f42691955e07',
@@ -209,6 +207,8 @@ const updateReview = async (req, res) => {
 
 const deleteReview = async (req, res) => {
     //#swagger.tags=['reviews']
+    //#swagger.description = 'Delete one review document'
+
     const reviewID = new ObjectId(req.params.id);
     const response = await mongodb
         .getDatabase()
