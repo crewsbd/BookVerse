@@ -6,13 +6,12 @@ const getAll = async (req, res) => {
     //#swagger.description = 'Get all book documents'
     const result = await mongodb.getDatabase().db().collection('book').find();
     result.toArray().then((books) => {
-        if(books[0]) {
-            console.log("SUCCESS")
+        if (books[0]) {
+            console.log('SUCCESS');
             res.setHeader('Content-Type', 'application/json');
             res.status(200).json(books);
-        }
-        else {
-            console.log("FAILURE")
+        } else {
+            console.log('FAILURE');
             res.status(404).json({ message: 'No books found' });
         }
     });
@@ -36,14 +35,12 @@ const getSingle = async (req, res) => {
     await result
         .toArray()
         .then((book) => {
-            if(book[0]) {
+            if (book[0]) {
                 res.setHeader('Content-Type', 'application/json');
                 res.status(200).json(book[0]);
-            }
-            else {
+            } else {
                 res.status(404).json({ message: 'Book not found' });
             }
- 
         })
         .catch((error) => {
             res.status(404).json({ message: 'User not found' });
@@ -52,7 +49,22 @@ const getSingle = async (req, res) => {
 
 const createBook = async (req, res) => {
     //#swagger.tags=['books']
-    //#swagger.description = 'Create one book document'
+
+    /* #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Create one book document',
+        schema: {
+            $title: '1984',
+            $authorLastName: 'Orwell',
+            $authorFirstName: 'George',
+            $isbn: '978-0151010264',
+            $publisher: 'Mariner Books Classics',
+            $publicationDate: 'June 1, 2003',
+            $genre: 'Dystopian Fiction',
+            $synopsis: '1984 is a dystopian novel set in a totalitarian society ruled by the Party and its leader, Big Brother. The story follows Winston Smith, a low-ranking member of the Party who becomes disillusioned with its oppressive regime and begins to rebel against it. As he navigates life under constant surveillance and censorship, Winston grapples with questions of truth, freedom, and individuality.'
+        }
+    }
+    */
     const book = {
         title: req.body.title,
         authorLastName: req.body.authorLastName,
@@ -69,7 +81,7 @@ const createBook = async (req, res) => {
         .collection('book')
         .insertOne(book);
     if (result.acknowledged) {
-        res.status(204).json({id: result.insertedId});
+        res.status(201).json({ created: result.insertedId });
     } else {
         res.status(500).json(
             response.error || 'Some error occurred while inserting the book.'
@@ -79,7 +91,22 @@ const createBook = async (req, res) => {
 
 const updateBook = async (req, res) => {
     //#swagger.tags=['books']
-    //#swagger.description = 'Update one book document'
+
+    /* #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Update one book document',
+        schema: {
+            $title: 'Animal Farm and 1984 ',
+            $authorLastName: 'Orwell',
+            $authorFirstName: 'George',
+            $isbn: '978-0151010264',
+            $publisher: 'Mariner Books Classics',
+            $publicationDate: 'June 1, 2003',
+            $genre: 'Dystopian Fiction',
+            $synopsis: '1984 is a dystopian novel set in a totalitarian society ruled by the Party and its leader, Big Brother. The story follows Winston Smith, a low-ranking member of the Party who becomes disillusioned with its oppressive regime and begins to rebel against it. As he navigates life under constant surveillance and censorship, Winston grapples with questions of truth, freedom, and individuality.'
+        }
+    }
+    */
     const bookId = new ObjectId(req.params.id);
     const book = {
         title: req.body.title,
@@ -97,7 +124,7 @@ const updateBook = async (req, res) => {
         .collection('book')
         .replaceOne({ _id: bookId }, book);
     if (response.modifiedCount > 0) {
-        res.status(204).send();
+        res.status(200).json({ updated: `${req.params.id}` });
     } else {
         res.status(500).json(
             response.error || 'Some error occurred while updating the book.'

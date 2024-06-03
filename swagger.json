@@ -62,39 +62,58 @@
         "tags": [
           "books"
         ],
-        "description": "Create one book document",
+        "description": "",
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "description": "Create one book document",
             "schema": {
               "type": "object",
               "properties": {
                 "title": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "1984"
                 },
                 "authorLastName": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Orwell"
                 },
                 "authorFirstName": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "George"
                 },
                 "isbn": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "978-0151010264"
                 },
                 "publisher": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Mariner Books Classics"
                 },
                 "publicationDate": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "June 1, 2003"
                 },
                 "genre": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Dystopian Fiction"
                 },
                 "synopsis": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "1984 is a dystopian novel set in a totalitarian society ruled by the Party and its leader, Big Brother. The story follows Winston Smith, a low-ranking member of the Party who becomes disillusioned with its oppressive regime and begins to rebel against it. As he navigates life under constant surveillance and censorship, Winston grapples with questions of truth, freedom, and individuality."
                 }
-              }
+              },
+              "required": [
+                "title",
+                "authorLastName",
+                "authorFirstName",
+                "isbn",
+                "publisher",
+                "publicationDate",
+                "genre",
+                "synopsis"
+              ]
             }
           }
         ],
@@ -147,7 +166,7 @@
         "tags": [
           "books"
         ],
-        "description": "Update one book document",
+        "description": "",
         "parameters": [
           {
             "name": "id",
@@ -158,34 +177,53 @@
           {
             "name": "body",
             "in": "body",
+            "description": "Update one book document",
             "schema": {
               "type": "object",
               "properties": {
                 "title": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Animal Farm and 1984 "
                 },
                 "authorLastName": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Orwell"
                 },
                 "authorFirstName": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "George"
                 },
                 "isbn": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "978-0151010264"
                 },
                 "publisher": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Mariner Books Classics"
                 },
                 "publicationDate": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "June 1, 2003"
                 },
                 "genre": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Dystopian Fiction"
                 },
                 "synopsis": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "1984 is a dystopian novel set in a totalitarian society ruled by the Party and its leader, Big Brother. The story follows Winston Smith, a low-ranking member of the Party who becomes disillusioned with its oppressive regime and begins to rebel against it. As he navigates life under constant surveillance and censorship, Winston grapples with questions of truth, freedom, and individuality."
                 }
-              }
+              },
+              "required": [
+                "title",
+                "authorLastName",
+                "authorFirstName",
+                "isbn",
+                "publisher",
+                "publicationDate",
+                "genre",
+                "synopsis"
+              ]
             }
           }
         ],
@@ -658,7 +696,7 @@
               "properties": {
                 "name": {
                   "type": "string",
-                  "example": "John Roe"
+                  "example": "Good Books"
                 },
                 "userId": {
                   "type": "string",
@@ -683,8 +721,8 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
+          "201": {
+            "description": "Created"
           },
           "400": {
             "description": "Bad Request"
@@ -748,7 +786,7 @@
               "properties": {
                 "name": {
                   "type": "string",
-                  "example": "John Roe"
+                  "example": "Good books"
                 },
                 "userId": {
                   "type": "string",
@@ -773,8 +811,8 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
@@ -801,8 +839,8 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
+          "200": {
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"

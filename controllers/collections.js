@@ -117,7 +117,7 @@ const createCollection = async (req, res) => {
         in: 'body',
         description: 'Create one collection document',
         schema: {
-            $name: 'John Roe',
+            $name: 'Good Books',
             $userId: '665220f5a5130bbd1e9fef37',
             $bookList: [ '6646462b5878f42691955e07' ]
         }
@@ -164,7 +164,7 @@ const updateCollection = async (req, res) => {
         in: 'body',
         description: 'Update one collection document',
         schema: {
-            $name: 'John Roe',
+            $name: 'Good books',
             $userId: '665220f5a5130bbd1e9fef37',
             $bookList: [ '6646462b5878f42691955e07' ]
         }
