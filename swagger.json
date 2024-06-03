@@ -235,7 +235,7 @@
         "tags": [
           "users"
         ],
-        "description": "",
+        "description": "Get all user documents",
         "produces": [
           "application/json"
         ],
@@ -260,7 +260,7 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Add new user",
+            "description": "Add new user document",
             "schema": {
               "type": "object",
               "properties": {
@@ -316,7 +316,7 @@
         "tags": [
           "users"
         ],
-        "description": "",
+        "description": "Get one user document",
         "produces": [
           "application/json"
         ],
@@ -355,7 +355,7 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Add new user",
+            "description": "Update existing user document",
             "schema": {
               "type": "object",
               "properties": {
@@ -409,7 +409,7 @@
         "tags": [
           "users"
         ],
-        "description": "",
+        "description": "Delete one user document",
         "parameters": [
           {
             "name": "id",
@@ -813,5 +813,8 @@
         }
       }
     }
+  },
+  "swaggerOptions": {
+    "docExpansion": "none"
   }
 }

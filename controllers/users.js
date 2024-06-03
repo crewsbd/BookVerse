@@ -3,6 +3,8 @@ const ObjectId = require('mongodb').ObjectId;
 
 const getAll = async (req, res) => {
     //#swagger.tags=['users']
+    //#swagger.description = 'Get all user documents'
+
     const result = await mongodb.getDatabase().db().collection('user').find();
     result.toArray().then((users) => {
         if (users[0]) {
@@ -16,6 +18,8 @@ const getAll = async (req, res) => {
 
 const getSingle = async (req, res) => {
     //#swagger.tags=['users']
+    //#swagger.description = 'Get one user document'
+  
     const userId = new ObjectId(req.params.id);
     const result = await mongodb
         .getDatabase()
@@ -36,7 +40,7 @@ const createUser = async (req, res) => {
 
     /* #swagger.parameters['body'] = {
         in: 'body',
-        description: 'Add new user',
+        description: 'Add new user document',
         schema: {
             $oauthID: 12345678,
             $name: 'Jane Doe',
@@ -83,7 +87,7 @@ const updateUser = async (req, res) => {
 
     /* #swagger.parameters['body'] = {
         in: 'body',
-        description: 'Add new user',
+        description: 'Update existing user document',
         schema: {
             $oauthID: 12345678,
             $name: 'Jane Doe',
@@ -129,6 +133,8 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     //#swagger.tags=['users']
+    //#swagger.description = 'Delete one user document'
+ 
     const userID = new ObjectId(req.params.id);
     const response = await mongodb
         .getDatabase()
