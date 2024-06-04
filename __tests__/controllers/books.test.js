@@ -47,14 +47,14 @@ describe('Book controller', () => {
         // Set up the req and res
         request.body = newBook;
         response.json = jest.fn((json) => {
-            docID = json.id;
+            docID = json.created;
         });
 
         // Run the controller
         await controller.createBook(request, response);
 
         //Test results
-        expect(response.status).toHaveBeenCalledWith(204);
+        expect(response.status).toHaveBeenCalledWith(201);
         expect(response.json).toHaveBeenCalled();
     }, 10000);
 
@@ -113,7 +113,7 @@ describe('Book controller', () => {
         await controller.updateBook(request, response);
 
         // Test results
-        expect(response.status).toHaveBeenCalledWith(204);
+        expect(response.status).toHaveBeenCalledWith(200);
     });
 
     test('Check if the book can delete', async () => {

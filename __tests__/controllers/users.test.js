@@ -58,9 +58,6 @@ describe('Users controller', () => {
 
             await getAll(req, res); // Call the getAll function with mock req and res
 
-            console.log(res.status.mock.calls); // Log the calls to res.status
-            console.log(res.json.mock.calls[0]); // Log the calls to res.json
-
             expect(res.status).toHaveBeenCalledWith(200); // Check that res.status was called with 200
             expect(res.json).toHaveBeenCalledWith(users); // Check that res.json was called with the correct users array
         });
@@ -88,9 +85,6 @@ describe('Users controller', () => {
 
             await getSingle(req, res);
 
-            console.log(res.status.mock.calls); // Log the calls to res.status
-            console.log(res.json.mock.calls); // Log the calls to res.json
-
             expect(res.status).toHaveBeenLastCalledWith(200);
             expect(res.json).toHaveBeenLastCalledWith(user);
         });
@@ -108,9 +102,6 @@ describe('Users controller', () => {
             mockDb.findOne.mockResolvedValue(null);
 
             await getSingle(req, res);
-
-            console.log(res.status.mock.calls); // Log the calls to res.status
-            console.log(res.json.mock.calls); // Log the calls to res.json
 
             expect(res.status).toHaveBeenCalledWith(404);
             expect(res.json).toHaveBeenCalledWith({ message: `User ${req.params.id} not found` });
@@ -149,8 +140,6 @@ describe('Users controller', () => {
 
             await createUser(req, res);
 
-            console.log(res.status.mock.calls); // Log the calls to res.status
-
             expect(res.status).toHaveBeenCalledWith(204);
             expect(res.send).toHaveBeenCalled();
         });
@@ -177,9 +166,6 @@ describe('Users controller', () => {
             });
 
             await createUser(req, res);
-
-            console.log(res.status.mock.calls); // Log the calls to res.status
-            console.log(res.json.mock.calls); // Log the calls to res.json
 
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.json).toHaveBeenCalledWith( 'Some error occurred while updating the user.' );
@@ -211,8 +197,6 @@ describe('Users controller', () => {
 
             await updateUser(req, res);
 
-            console.log(res.status.mock.calls); // Log the calls to res.status
-
             expect(res.status).toHaveBeenCalledWith(204);
             expect(res.send).toHaveBeenCalled();
         });
@@ -242,9 +226,6 @@ describe('Users controller', () => {
 
             await updateUser(req, res);
 
-            console.log(res.status.mock.calls); // Log the calls to res.status
-            console.log(res.json.mock.calls); // Log the calls to res.json
-
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.json).toHaveBeenCalledWith( 'Some error occurred while updating the user.' );
         });
@@ -267,8 +248,6 @@ describe('Users controller', () => {
 
             await deleteUser(req, res);
 
-            console.log(res.status.mock.calls); // Log the calls to res.status
-
             expect(res.status).toHaveBeenCalledWith(204);
             expect(res.send).toHaveBeenCalled();
         });
@@ -289,9 +268,6 @@ describe('Users controller', () => {
             });
 
             await deleteUser(req, res);
-
-            console.log(res.status.mock.calls); // Log the calls to res.status
-            console.log(res.json.mock.calls); // Log the calls to res.json
 
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.json).toHaveBeenCalledWith( 'Some error occurred while updating the user.' );

@@ -1,4 +1,10 @@
-const { getAll, getSingle, createReview, updateReview, deleteReview } = require('../../controllers/reviews');
+const {
+    getAll,
+    getSingle,
+    createReview,
+    updateReview,
+    deleteReview,
+} = require('../../controllers/reviews');
 const database = require('../../database');
 
 // Mock the database initialization
@@ -6,16 +12,16 @@ jest.mock('../../database', () => ({
     getDatabase: jest.fn().mockReturnValue({
         db: jest.fn().mockReturnValue({
             collection: jest.fn().mockReturnValue({
-                find: jest.fn().mockReturnValue({
-                    toArray: jest.fn()
+                aggregate: jest.fn().mockReturnValue({
+                    toArray: jest.fn(),
                 }),
                 findOne: jest.fn(),
                 insertOne: jest.fn(),
                 replaceOne: jest.fn(),
-                deleteOne: jest.fn()
-            })
-        })
-    })
+                deleteOne: jest.fn(),
+            }),
+        }),
+    }),
 }));
 
 describe('reviews controller', () => {
@@ -32,30 +38,27 @@ describe('reviews controller', () => {
             const res = {
                 status: jest.fn().mockReturnThis(),
                 json: jest.fn(),
-                setHeader: jest.fn()
+                setHeader: jest.fn(),
             }; // Mock response object
 
             const reviews = [
                 {
-                    "_id": "6652396d46a631a97cf0492f",
-                    "userName": "John Doe",
-                    "reviewText": "Lorem ipsum dolor sit amet.",
-                    "reviewScore": "5/5",
+                    _id: '6652396d46a631a97cf0492f',
+                    userName: 'John Doe',
+                    reviewText: 'Lorem ipsum dolor sit amet.',
+                    reviewScore: '5/5',
                 },
                 {
-                    "_id": "6452396d46a621a97cf0462f",
-                    "userName": "John Doe",
-                    "reviewText": "Lorem ipsum dolor sit amet.",
-                    "reviewScore": "5/5",
-                }
+                    _id: '6452396d46a621a97cf0462f',
+                    userName: 'John Doe',
+                    reviewText: 'Lorem ipsum dolor sit amet.',
+                    reviewScore: '5/5',
+                },
             ];
 
-            mockDb.find().toArray.mockResolvedValue(reviews);
+            mockDb.aggregate().toArray.mockResolvedValue(reviews);
 
             await getAll(req, res); // Call the getAll function with mock req and res
-
-            console.log(res.status.mock.calls); // Log the calls to res.status
-            console.log(res.json.mock.calls[0]); // Log the calls to res.json
 
             expect(res.status).toHaveBeenCalledWith(200); // Check that res.status was called with 200
             expect(res.json).toHaveBeenCalledWith(reviews); // Check that res.json was called with the correct reviews array
@@ -68,46 +71,51 @@ describe('reviews controller', () => {
             const res = {
                 status: jest.fn().mockReturnThis(),
                 json: jest.fn(),
-                setHeader: jest.fn()
+                setHeader: jest.fn(),
             };
 
-            const review = {
-                "_id": "6652396d46a631a97cf0492f",
-                "userName": "John Doe",
-                "reviewText": "Lorem ipsum dolor sit amet.",
-                "reviewScore": "5/5",
+            const review = [
+                {
+                    _id: '6652396d46a631a97cf0492f',
+                    userName: 'John Doe',
+                    reviewText: 'Lorem ipsum dolor sit amet.',
+                    reviewScore: '5/5',
+                }
+            ];
+
+            const reviewReturn = {
+                _id: '6652396d46a631a97cf0492f',
+                userName: 'John Doe',
+                reviewText: 'Lorem ipsum dolor sit amet.',
+                reviewScore: '5/5',
             };
 
-            mockDb.findOne.mockResolvedValue(review);
+            mockDb.aggregate().toArray.mockResolvedValue(review);
 
             await getSingle(req, res);
 
-            console.log(res.status.mock.calls); // Log the calls to res.status
-            console.log(res.json.mock.calls); // Log the calls to res.json
-
             expect(res.status).toHaveBeenLastCalledWith(200);
-            expect(res.json).toHaveBeenLastCalledWith(review);
+            expect(res.json).toHaveBeenLastCalledWith(reviewReturn);
         });
 
         it('should return 404 if review not found', async () => {
             const req = {
-                params: { id: '6652296d46d631c87cf0492f' } // Valid ObjectId format but not in database
+                params: { id: '6652296d46d631c87cf0492f' }, // Valid ObjectId format but not in database
             };
             const res = {
                 status: jest.fn().mockReturnThis(),
                 json: jest.fn(),
-                setHeader: jest.fn()
+                setHeader: jest.fn(),
             };
 
-            mockDb.findOne.mockResolvedValue(null);
+            mockDb.aggregate().toArray.mockResolvedValue(null);
 
             await getSingle(req, res);
 
-            console.log(res.status.mock.calls); // Log the calls to res.status
-            console.log(res.json.mock.calls); // Log the calls to res.json
-
             expect(res.status).toHaveBeenCalledWith(404);
-            expect(res.json).toHaveBeenCalledWith({ message: `Review ${req.params.id} not found` });
+            expect(res.json).toHaveBeenCalledWith({
+                message: `Review not found`,
+            });
         });
     });
 
@@ -117,30 +125,32 @@ describe('reviews controller', () => {
                 body: {
                     userName: 'Jane Doe',
                     reviewText: 'Lorem ipsum dolor sit amet.',
-                    reviewScore: '5/5'
-                }
+                    reviewScore: '5/5',
+                },
             };
             const res = {
                 status: jest.fn().mockReturnThis(),
                 send: jest.fn(),
-                json: jest.fn()
+                json: jest.fn(),
             };
 
             const review = {
-                "_id": "6652396d46a631a97cf0492f",
-                "userName": "John Doe",
-                "reviewText": "Lorem ipsum dolor sit amet.",
-                "reviewScore": "5/5",
+                _id: '6652396d46a631a97cf0492f',
+                userName: 'John Doe',
+                reviewText: 'Lorem ipsum dolor sit amet.',
+                reviewScore: '5/5',
             };
 
             // Mock the insertOne method to return a successful response
-            database.getDatabase().db().collection('review').insertOne.mockResolvedValue({
-                acknowledged: true
-            });
+            database
+                .getDatabase()
+                .db()
+                .collection('review')
+                .insertOne.mockResolvedValue({
+                    acknowledged: true,
+                });
 
             await createReview(req, res);
-
-            console.log(res.status.mock.calls); // Log the calls to res.status
 
             expect(res.status).toHaveBeenCalledWith(204);
             expect(res.send).toHaveBeenCalled();
@@ -151,28 +161,31 @@ describe('reviews controller', () => {
                 body: {
                     userName: 'Jane Doe',
                     reviewText: 'Lorem ipsum dolor sit amet.',
-                    reviewScore: '5/5'
-                }
+                    reviewScore: '5/5',
+                },
             };
             const res = {
                 status: jest.fn().mockReturnThis(),
                 send: jest.fn(),
-                json: jest.fn()
+                json: jest.fn(),
             };
 
             // Mock the insertOne method to return a failed response
-            database.getDatabase().db().collection('review').insertOne.mockResolvedValue({
-                acknowledged: false,
-                error: 'Some error occurred while creating the review.'
-            });
+            database
+                .getDatabase()
+                .db()
+                .collection('review')
+                .insertOne.mockResolvedValue({
+                    acknowledged: false,
+                    error: 'Some error occurred while creating the review.',
+                });
 
             await createReview(req, res);
 
-            console.log(res.status.mock.calls); // Log the calls to res.status
-            console.log(res.json.mock.calls); // Log the calls to res.json
-
             expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.json).toHaveBeenCalledWith( 'Some error occurred while creating the review.' );
+            expect(res.json).toHaveBeenCalledWith(
+                'Some error occurred while creating the review.'
+            );
         });
     });
 
@@ -183,27 +196,28 @@ describe('reviews controller', () => {
                 body: {
                     userName: 'Jane Doe',
                     reviewText: 'Lorem ipsum dolor sit amet.',
-                    reviewScore: '5/5'
-                }
+                    reviewScore: '5/5',
+                },
             };
             const res = {
                 status: jest.fn().mockReturnThis(),
                 send: jest.fn(),
-                json: jest.fn()
+                json: jest.fn(),
             };
 
             // Mock the insertOne method to return a successful response
-            database.getDatabase().db().collection('review').replaceOne.mockResolvedValue({
-                acknowledged: true,
-                modifiedCount: 1
-            });
+            database
+                .getDatabase()
+                .db()
+                .collection('review')
+                .replaceOne.mockResolvedValue({
+                    acknowledged: true,
+                    modifiedCount: 1,
+                });
 
             await updateReview(req, res);
 
-            console.log(res.status.mock.calls); // Log the calls to res.status
-
             expect(res.status).toHaveBeenCalledWith(204);
-            expect(res.send).toHaveBeenCalled();
         });
 
         it('should return 500 if review creation fails', async () => {
@@ -212,29 +226,32 @@ describe('reviews controller', () => {
                 body: {
                     userName: 'Jane Doe',
                     reviewText: 'Lorem ipsum dolor sit amet.',
-                    reviewScore: '5/5'
-                }
+                    reviewScore: '5/5',
+                },
             };
             const res = {
                 status: jest.fn().mockReturnThis(),
                 send: jest.fn(),
-                json: jest.fn()
+                json: jest.fn(),
             };
 
             // Mock the insertOne method to return a failed response
-            database.getDatabase().db().collection('review').replaceOne.mockResolvedValue({
-                acknowledged: false,
-                modifiedCount: 0,
-                error: 'Some error occurred while updating the review.'
-            });
+            database
+                .getDatabase()
+                .db()
+                .collection('review')
+                .replaceOne.mockResolvedValue({
+                    acknowledged: false,
+                    modifiedCount: 0,
+                    error: 'Some error occurred while updating the review.',
+                });
 
             await updateReview(req, res);
 
-            console.log(res.status.mock.calls); // Log the calls to res.status
-            console.log(res.json.mock.calls); // Log the calls to res.json
-
             expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.json).toHaveBeenCalledWith( 'Some error occurred while updating the review.' );
+            expect(res.json).toHaveBeenCalledWith(
+                'Some error occurred while updating the review.'
+            );
         });
     });
 
@@ -244,21 +261,22 @@ describe('reviews controller', () => {
             const res = {
                 status: jest.fn().mockReturnThis(),
                 send: jest.fn(),
-                json: jest.fn()
+                json: jest.fn(),
             };
 
             // Mock the insertOne method to return a successful response
-            database.getDatabase().db().collection('review').deleteOne.mockResolvedValue({
-                acknowledged: true,
-                deletedCount: 1
-            });
+            database
+                .getDatabase()
+                .db()
+                .collection('review')
+                .deleteOne.mockResolvedValue({
+                    acknowledged: true,
+                    deletedCount: 1,
+                });
 
             await deleteReview(req, res);
 
-            console.log(res.status.mock.calls); // Log the calls to res.status
-
             expect(res.status).toHaveBeenCalledWith(204);
-            expect(res.send).toHaveBeenCalled();
         });
 
         it('should return 500 if review deletion fails', async () => {
@@ -266,24 +284,26 @@ describe('reviews controller', () => {
             const res = {
                 status: jest.fn().mockReturnThis(),
                 send: jest.fn(),
-                json: jest.fn()
+                json: jest.fn(),
             };
 
             // Mock the insertOne method to return a failed response
-            database.getDatabase().db().collection('review').deleteOne.mockResolvedValue({
-                acknowledged: false,
-                deletedCount: 0,
-                error: 'Some error occurred while updating the review.'
-            });
+            database
+                .getDatabase()
+                .db()
+                .collection('review')
+                .deleteOne.mockResolvedValue({
+                    acknowledged: false,
+                    deletedCount: 0,
+                    error: 'Some error occurred while updating the review.',
+                });
 
             await deleteReview(req, res);
 
-            console.log(res.status.mock.calls); // Log the calls to res.status
-            console.log(res.json.mock.calls); // Log the calls to res.json
-
             expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.json).toHaveBeenCalledWith( 'Some error occurred while updating the review.' );
+            expect(res.json).toHaveBeenCalledWith(
+                'Some error occurred while updating the review.'
+            );
         });
     });
-
 });

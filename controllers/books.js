@@ -26,6 +26,10 @@ const getSingle = async (req, res) => {
     //#swagger.tags=['books']
     //#swagger.description = 'Get one book document'
     const bookId = new ObjectId(req.params.id);
+    console.log(bookId)
+    console.log(bookId)
+    console.log(bookId)
+    console.log(bookId)
     const result = await mongodb
         .getDatabase()
         .db()
@@ -39,10 +43,18 @@ const getSingle = async (req, res) => {
                 res.setHeader('Content-Type', 'application/json');
                 res.status(200).json(book[0]);
             } else {
+                console.dir(book)
+                console.dir("SMALL")
+                console.dir("SMALL")
+                console.dir("SMALL")
                 res.status(404).json({ message: 'Book not found' });
             }
         })
         .catch((error) => {
+            console.dir(error)
+            console.dir(error)
+            console.dir(error)
+            console.dir(error)
             res.status(404).json({ message: 'User not found' });
         });
 };

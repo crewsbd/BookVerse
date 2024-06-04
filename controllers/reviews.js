@@ -115,9 +115,11 @@ const getSingle = async (req, res) => {
             },
         ]);
 
+     
         await result
         .toArray()
         .then((review) => {
+
             if (review[0]) {
                 res.setHeader('Content-Type', 'application/json');
                 res.status(200).json(review[0]);

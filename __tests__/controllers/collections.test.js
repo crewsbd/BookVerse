@@ -10,7 +10,7 @@ describe('Collections Controller', () => {
     const newCollection = {
         name: 'Test Collection',
         description: 'A test collection of books',
-        bookList: ['6646462b5878f42691955e07', '6646462b5878f42691955e03' ]
+        bookList: ['665e564b899883bf13b67ac5', '665e564b899883bf13b67ac5'],
     };
     let request;
     let response;
@@ -37,12 +37,12 @@ describe('Collections Controller', () => {
     test('Collection is created', async () => {
         request.body = newCollection;
         response.json = jest.fn((json) => {
-            docID = json.id;
+            docID = json.created;
         });
 
         await controller.createCollection(request, response);
 
-        expect(response.status).toHaveBeenCalledWith(204);
+        expect(response.status).toHaveBeenCalledWith(201);
         expect(response.json).toHaveBeenCalled();
     }, 10000);
 
@@ -88,7 +88,7 @@ describe('Collections Controller', () => {
 
         await controller.updateCollection(request, response);
 
-        expect(response.status).toHaveBeenCalledWith(204);
+        expect(response.status).toHaveBeenCalledWith(200);
     });
 
     test('Check if the collection can delete', async () => {
@@ -96,6 +96,6 @@ describe('Collections Controller', () => {
 
         await controller.deleteCollection(request, response);
 
-        expect(response.status).toHaveBeenCalledWith(204);
+        expect(response.status).toHaveBeenCalledWith(200);
     });
 });

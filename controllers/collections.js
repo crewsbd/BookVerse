@@ -132,7 +132,11 @@ const createCollection = async (req, res) => {
             name: req.body.name,
             userId: req.body.userId,
             bookList: req.body.bookList.map((bookId) => {
-                return new ObjectId(bookId);
+                console.log(bookId)
+                console.log(bookId)
+                console.log(bookId)
+                console.log(bookId)
+                return new ObjectId('' + bookId);
             }),
         };
     } else {
